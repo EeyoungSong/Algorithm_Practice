@@ -1,8 +1,7 @@
-import sys
-n = int(sys.stdin.readline())
-cards = sorted(list(map(int, sys.stdin.readline.split())))
-m = int(sys.stdin.readline())
-nums = list(map(int, sys.stdin.readline().split()))
+n = int(input())
+cards = sorted(list(map(int, input().split())))
+m = int(input())
+nums = list(map(int, input().split()))
 
 def binarySearch(array, target, start, end):
     if start > end:
