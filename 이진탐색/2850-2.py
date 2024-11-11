@@ -27,30 +27,29 @@ idx_arr = []
 for i in range(n-1, -1, -1):
     if i == n-1:
         idx_arr.append(arr[i] - arr[i-1])
-        print(arr[i], arr[i-1], idx_arr)
     elif i == 0:
         idx_arr.append(idx_arr[n-2-i] + (arr[i]) * (n-i))
     else:
         idx_arr.append(idx_arr[n-2-i] + (arr[i] - arr[i-1]) * (n-i))
 
+idx_arr.insert(0, 0)
 
+search = binarySearch(idx_arr, m, 0, len(idx_arr)-1)
+cur_diff = search
+print(search)
+end_num = idx_arr[search]
+start_num = idx_arr[search - 1]
 
-add_num = 1
-cur_idx = 1
-cnt = 0
-while add_num < idx_arr[-1]:
-    add_num += cur_idx
-    cnt += 1
-    if add_num == m:
-        print(arr[-1] - cnt)
-        break
+cnt = (m - start_num) // cur_diff
+print("idx_arr", idx_arr)
+print(search, cur_diff, end_num, start_num, cnt)
 
-    elif add_num > m:
-        print(arr[-1] - cnt)
-        break
+for i in range(1, search):
+    cnt += (idx_arr[i] - idx_arr[i-1]) // (i)
 
-    if idx_arr[cur_idx-1] == add_num:
-        cur_idx += 1
+if (m - start_num) % cur_diff == 0:
+    print(arr[-1] - cnt)
+else:
+    print(arr[-1] - (cnt + 1))
 
-# print(arr[-1] - (binarySearch(num_arr, m, 0, len(num_arr)-1)+1))
 
