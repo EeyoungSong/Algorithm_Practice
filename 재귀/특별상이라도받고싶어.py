@@ -12,10 +12,10 @@ def recursion(start_coor, n):
 
     arr = []
     for new_start_coor in new_start_coors:
-        print("new start coor", new_start_coor)
+        # print("new start coor", new_start_coor)
         arr.append(recursion(new_start_coor, n//2))
     
-    print(sorted(arr)[1])
+    # print(sorted(arr)[1])
     return sorted(arr)[1]
 
 
