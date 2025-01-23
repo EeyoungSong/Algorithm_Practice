@@ -3,7 +3,6 @@
 # 필요한 만큼만 가져갈 것
 # 적어도 M미터를 가져가기 위해 절단기에 설정할 수 있는 높이의 최대값
 
-# 1트 - 메모리 초과
 
 import sys
 n, m = map(int, sys.stdin.readline().split())
