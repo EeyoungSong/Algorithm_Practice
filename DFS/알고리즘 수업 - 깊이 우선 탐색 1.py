@@ -1,3 +1,10 @@
+'''
+오류 로그 : 
+1. 연결리스트 말고 인접 행렬로 저장했더니 메모리 초과
+2. sys로 input 안받았더니 시간 초과
+'''
+
+
 import sys
 sys.setrecursionlimit(10**9)
 
