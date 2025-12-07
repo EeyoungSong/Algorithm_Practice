@@ -1,0 +1,59 @@
+name: Push to Shared Sheet
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  append_to_sheet:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: pip install gspread oauth2client
+
+      - name: Append to per-user sheet
+        env:
+          CREDS: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS_JSON }}
+          SHEET_ID: ${{ secrets.SHEET_ID }}
+        run: |
+          cat > creds.json <<EOF
+          $CREDS
+          EOF
+
+          python - <<EOF
+          import gspread, json
+          from datetime import datetime
+
+          # Load creds
+          creds = json.load(open('creds.json'))
+          gc = gspread.service_account_from_dict(creds)
+
+          # Open spreadsheet
+          sh = gc.open_by_key("${{ env.SHEET_ID }}")
+
+          # Determine sheet name by user
+          username = "${{ github.actor }}"
+
+          # Try to get sheet, or create if missing
+          try:
+              ws = sh.worksheet(username)
+          except:
+              ws = sh.add_worksheet(title=username, rows="1000", cols="10")
+              ws.append_row(["Repository", "User", "Commit Message", "SHA", "Timestamp"])
+
+          # Append data
+          ws.append_row([
+              "${{ github.repository }}",
+              username,
+              "${{ github.event.head_commit.message }}",
+              "${{ github.sha }}",
+              datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+          ])
+          EOF
